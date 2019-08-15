@@ -3,6 +3,7 @@ from tkinter import ttk
 from vistas.frame_carrera import *
 from vistas.frame_materia import *
 from vistas.frame_alumno import *
+from vistas.frame_profesor import *
 
 class Aplicacion(ttk.Frame):
     def __init__(self, ventana):
@@ -29,6 +30,10 @@ class Aplicacion(ttk.Frame):
         """Panel de Alumno"""
         self.alumno = Vista_alumno(self.navegador)
         self.navegador.add(self.alumno, text="Alumno")
+
+        """Panel de Profesor"""
+        self.profesor = Vista_profesor(self.navegador)
+        self.navegador.add(self.profesor, text="Profesor")
 
         self.navegador.pack()
         self.pack()
