@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter import ttk
 
 
-class Vista_carrera(ttk.Frame):
+class Vista_profesor(ttk.Frame):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -46,9 +46,9 @@ class Vista_carrera(ttk.Frame):
         self.tabla.heading('#2', text="DURACION DE CARRERA")
 
         """Boton Editar"""
-        self.boton_editar = Button(self, text="EDITAR CARRERA")
+        self.boton_editar = Button(self, text="EDITAR MATERIA")
         self.boton_editar.grid(row=6, column=0, pady=10, padx=10)
 
         """Boton Eliminar"""
-        self.boton_eliminar = Button(self, text="ELIMINAR CARRERA")
+        self.boton_eliminar = Button(self, text="ELIMINAR MATERIA")
         self.boton_eliminar.grid(row=6, column=1, pady=10, padx=10)
