@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+from conexion_db.consultas_db import *
 
 
 class Vista_bodega(ttk.Frame):
@@ -8,7 +9,36 @@ class Vista_bodega(ttk.Frame):
 
         def nuevo():
             self.entry_nombre.config(state="normal")
-            self.entry_duracion.config(state="normal")
+            self.entry_direccion.config(state="normal")
+
+        # Agregar datos a base de datos
+
+        def agregar_datos():
+
+            query = 'INSERT INTO bodega VALUES (NULL,?,?)'
+            parametros = (self.entry_nombre.get(), self.entry_direccion.get())
+
+            conn = Conectar_bd()
+            conn.run_db(query, parametros)
+
+            # Limpiar Campos
+            self.entry_nombre.delete(0, END)
+            self.entry_direccion.delete(0, END)
+
+            # Mostar Datos
+            listar_datos()
+
+        # Eliminar Datos
+        def eliminar_datos():
+
+            codigo = self.tabla.item(self.tabla.selection())['text']
+            query = 'DELETE FROM bodega where codigo_b = ?'
+
+            conn = Conectar_bd()
+            conn.run_db(query, (codigo,))
+
+            # Actualizar Tabla
+            listar_datos()
 
         """Label titulo registrar"""
         self.label_titulo = Label(self, text="Registrar Nueva Bodega")
@@ -23,15 +53,15 @@ class Vista_bodega(ttk.Frame):
         """Label y Campo de Direccion"""
         self.label_direccion = Label(self, text="Direccion Bodega: ")
         self.label_direccion.grid(row=2, column=0, pady=10, padx=10)
-        self.entry_duracion = Entry(self, state='readonly')
-        self.entry_duracion.grid(row=2, column=1, pady=10, padx=10)
+        self.entry_direccion = Entry(self, state='readonly')
+        self.entry_direccion.grid(row=2, column=1, pady=10, padx=10)
 
         """Boton Nuevo"""
         self.boton_nuevo = Button(self, text="NUEVA BODEGA", command=nuevo)
         self.boton_nuevo.grid(row=3, column=0, pady=10, padx=10)
 
         """Boton Guardar"""
-        self.boton_guardar = Button(self, text="GUARDAR BODEGA")
+        self.boton_guardar = Button(self, text="GUARDAR BODEGA", command=agregar_datos)
         self.boton_guardar.grid(row=3, column=1, pady=10, padx=10)
 
         """Label Listar Carrera"""
@@ -46,7 +76,7 @@ class Vista_bodega(ttk.Frame):
         self.tabla.heading('#2', text="DIRECCION DE BODEGA")
 
         """Boton Eliminar"""
-        self.boton_eliminar = Button(self, text="ELIMINAR CARRERA")
+        self.boton_eliminar = Button(self, text="ELIMINAR BODEGA", command=eliminar_datos)
         self.boton_eliminar.grid(row=6, column=0, pady=10, padx=10)
 
         """Editar datos"""
@@ -93,3 +123,21 @@ class Vista_bodega(ttk.Frame):
         """Boton Editar"""
         self.boton_editar = Button(self, text="EDITAR BODEGA", command=editar_datos)
         self.boton_editar.grid(row=6, column=1, pady=10, padx=10)
+
+        """Listar"""
+
+        def listar_datos():
+            # Eliminar datos de la tabla
+            recorrer_table = self.tabla.get_children()
+            for elementos in recorrer_table:
+                self.tabla.delete(elementos)
+
+            # Ejecutar la consulta y cargar datos
+            query = 'select * from bodega'
+            conn = Conectar_bd()
+            datos = conn.run_db(query)
+
+            for bodega in datos:
+                self.tabla.insert('', 0, text=bodega[0], value=(bodega[1], bodega[2]))
+
+        listar_datos()
