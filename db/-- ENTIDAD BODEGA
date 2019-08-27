@@ -1,0 +1,42 @@
+    -- ENTIDAD BODEGA 
+    CREATE TABLE bodega (
+    	codigo_b INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    	nombre_b TEXT NOT NULL,
+    	direccion_b INTEGER NOT NULL
+    );
+     
+    --ENTIDAD PROVEEDOR
+    CREATE TABLE proveedor(
+    	codigo_p INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    	nombre_p TEXT NOT NULL,
+    	telefono_p TEXT,
+    	direccion_p TEXT
+    );
+     
+    -- ENTIDAD MATERIAL
+    CREATE TABLE material (
+    	codigo_m INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    	nombre_m TEXT NOT NULL,
+    	creditos_m INTEGER NOT NULL
+    );
+     
+    --ENTIDAD CLIENTES
+     
+    CREATE TABLE cliente (
+    	codigo_a INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    	nombre_a TEXT NOT NULL,
+    	edad_a TEXT,
+    	telefono_a TEXT,
+    	codigo_c1 INTEGER,
+    	FOREIGN KEY (codigo_c1) REFERENCES bodega (codigo_c)
+    );
+     
+     
+    --Tabla intermedias CLIEN_PROV
+    CREATE TABLE clien_prov(
+    	codigo_a1 INTEGER,
+    	codigo_p1 INTEGER,
+    	FOREIGN KEY (codigo_a1) REFERENCES cliente (codigo_a), 
+    	FOREIGN KEY (codigo_p1) REFERENCES proveedor(codigo_p)
+    );
+     
