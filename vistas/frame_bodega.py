@@ -40,6 +40,18 @@ class Vista_bodega(ttk.Frame):
             # Actualizar Tabla
             listar_datos()
 
+        # Actualizar Datos
+        def actualizar_datos(codigo_n, codigo_a, nombre_n, nombre_a, direccion_n, direccion_a):
+            query = 'UPDATE bodega SET codigo_b = ?, nombre_b = ?, direccion_b = ? WHERE codigo_b=? AND nombre_b=? AND direccion_b=?'
+            parametros = (codigo_n, nombre_n, direccion_n, codigo_a, nombre_a, direccion_a)
+
+            conn = Conectar_bd()
+            conn.run_db(query, parametros)
+            self.ventana_editar.destroy()
+
+            # Actualizar Tabla
+            listar_datos()
+
         """Label titulo registrar"""
         self.label_titulo = Label(self, text="Registrar Nueva Bodega")
         self.label_titulo.grid(row=0, column=0, columnspan=2, pady=10, padx=10)
@@ -82,6 +94,11 @@ class Vista_bodega(ttk.Frame):
         """Editar datos"""
 
         def editar_datos():
+
+            codigo = self.tabla.item(self.tabla.selection())['text']
+            nombre_anti = self.tabla.item(self.tabla.selection())['values'][0]
+            direccion_anti = self.tabla.item(self.tabla.selection())['values'][1]
+
             """Arranque de ventana Editar"""
             self.ventana_editar = Toplevel()
             self.ventana_editar.title("EDITAR BODEGA")
@@ -89,13 +106,16 @@ class Vista_bodega(ttk.Frame):
             """Label y Campo de Codigo"""
             self.label_codigo = Label(self.ventana_editar, text="Codigo Bodega: ")
             self.label_codigo.grid(row=0, column=0, pady=10, padx=10)
-            self.entry_codigo = Entry(self.ventana_editar, state='readonly')
+            self.entry_codigo = Entry(self.ventana_editar, textvariable=StringVar(self.ventana_editar, value=codigo),
+                                      state='readonly')
             self.entry_codigo.grid(row=0, column=1, pady=10, padx=10)
 
             """Label y Campo de Antiguo Nombre"""
             self.label_antiguo_nombre = Label(self.ventana_editar, text="Antiguo Nombre Bodega: ")
             self.label_antiguo_nombre.grid(row=1, column=0, pady=10, padx=10)
-            self.entry_antigua_nombre = Entry(self.ventana_editar, state='readonly')
+            self.entry_antigua_nombre = Entry(self.ventana_editar,
+                                              textvariable=StringVar(self.ventana_editar, value=nombre_anti)
+                                              , state='readonly')
             self.entry_antigua_nombre.grid(row=1, column=1, pady=10, padx=10)
 
             """Label y Campo de Nuevo Nombre"""
@@ -107,17 +127,23 @@ class Vista_bodega(ttk.Frame):
             """Label y Campo de Antigua Direccion"""
             self.label_antigua_direccion = Label(self.ventana_editar, text="Antigua Direccion Bodega: ")
             self.label_antigua_direccion.grid(row=3, column=0, pady=10, padx=10)
-            self.entry_antigua_duracion = Entry(self.ventana_editar, state='readonly')
-            self.entry_antigua_duracion.grid(row=3, column=1, pady=10, padx=10)
+            self.entry_antigua_direccion = Entry(self.ventana_editar,
+                                                 textvariable=StringVar(self.ventana_editar, value=direccion_anti),
+                                                 state='readonly')
+            self.entry_antigua_direccion.grid(row=3, column=1, pady=10, padx=10)
 
             """Label y Campo de Nueva Direccion"""
             self.label_nueva_direccion = Label(self.ventana_editar, text="Nueva Direccion Bodega: ")
             self.label_nueva_direccion.grid(row=4, column=0, pady=10, padx=10)
-            self.entry_nueva_duracion = Entry(self.ventana_editar)
-            self.entry_nueva_duracion.grid(row=4, column=1, pady=10, padx=10)
+            self.entry_nueva_direccion = Entry(self.ventana_editar)
+            self.entry_nueva_direccion.grid(row=4, column=1, pady=10, padx=10)
 
             """Boton Actualizar"""
-            self.boton_actualizar = Button(self.ventana_editar, text="ACTUALIZAR BODEGA")
+            self.boton_actualizar = Button(self.ventana_editar, text="ACTUALIZAR BODEGA",
+                                           command=lambda: actualizar_datos(codigo, codigo,
+                                                                            self.entry_nuevo_nombre.get(), nombre_anti,
+                                                                            self.entry_nueva_direccion.get(),
+                                                                            direccion_anti))
             self.boton_actualizar.grid(row=5, column=0, columnspan=2, pady=10, padx=10)
 
         """Boton Editar"""
