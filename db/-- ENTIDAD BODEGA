@@ -30,13 +30,3 @@
     	codigo_c1 INTEGER,
     	FOREIGN KEY (codigo_c1) REFERENCES bodega (codigo_c)
     );
-     
-     
-    --Tabla intermedias CLIEN_PROV
-    CREATE TABLE clien_prov(
-    	codigo_a1 INTEGER,
-    	codigo_p1 INTEGER,
-    	FOREIGN KEY (codigo_a1) REFERENCES cliente (codigo_a), 
-    	FOREIGN KEY (codigo_p1) REFERENCES proveedor(codigo_p)
-    );
-     
