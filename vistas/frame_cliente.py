@@ -100,13 +100,14 @@ class Vista_cliente(ttk.Frame):
         self.boton_eliminar = Button(self, text="ELIMINAR CLIENTE", command=eliminar_datos)
         self.boton_eliminar.grid(row=7, column=0, pady=10, padx=10)
 
+        """Editar datos"""
+
         def editar_datos():
 
             codigo = self.tabla.item(self.tabla.selection())['text']
             nombre_anti = self.tabla.item(self.tabla.selection())['values'][0]
             edad_anti = self.tabla.item(self.tabla.selection())['values'][1]
             telefono_anti = self.tabla.item(self.tabla.selection())['values'][2]
-            codigo_c1 = self.tabla.item(self.tabla.selection())['text']
 
             """Arranque de ventana Editar"""
             self.ventana_editar = Toplevel()
